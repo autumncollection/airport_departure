@@ -1,0 +1,120 @@
+// 20191209183759
+// https://www.viennaairport.com/jart/prj3/va/data/flights/out.json
+
+{
+  "monitor": {
+    "type": "json",
+    "sendDate": "2019-12-09T18:37:29.068",
+    "stale": false,
+    "departure": [
+      {
+        "idx": 0,
+        "fn": "OS 229",
+        "scheduledatetime": "2019-12-09T11:40:00Z",
+        "schedule": "2019-12-09T12:40:00.000",
+        "actualdatetime": "2019-12-09T12:09:00Z",
+        "actual": "2019-12-09T13:09:00.000",
+        "gate": "F37",
+        "gateArea": "F",
+        "status": {
+          "code": "AIR",
+          "description": "airborne"
+        },
+        "codeshares": [
+          {
+            "fn": "LH 6349",
+            "airline": "Lufthansa",
+            "webSite": "www.lufthansa.com"
+          }
+        ],
+        "aircraft": {
+          "type": "320",
+          "description": "Airbus 320"
+        },
+        "airline": {
+          "name": "Austrian",
+          "webSite": "www.austrian.com",
+          "iataCode": "OS",
+          "icaoCode": "AUA"
+        },
+        "destinations": [
+          {
+            "name": "Berlin Tegel Airport",
+            "nameEN": "Berlin TXL",
+            "nameDE": "Berlin TXL",
+            "nameEN10": "Berlin TXL",
+            "nameDE10": "Berlin TXL",
+            "iataCode": "TXL",
+            "webSite": "http://www.berlin-airport.de/de/reisende-txl/",
+            "city": {
+              "nameDE": "Berlin",
+              "nameEN": "Berlin",
+              "country": {
+                "nameDE": "Deutschland",
+                "nameEN": "Germany"
+              }
+            }
+          }
+        ],
+        "checkin": {
+          "range": "351-358",
+          "terminal": "T3"
+        }
+      },
+      {
+        "idx": 1,
+        "fn": "OS 359",
+        "scheduledatetime": "2019-12-09T11:40:00Z",
+        "schedule": "2019-12-09T12:40:00.000",
+        "actualdatetime": "2019-12-09T11:59:00Z",
+        "actual": "2019-12-09T12:59:00.000",
+        "gate": "F23",
+        "gateArea": "F",
+        "status": {
+          "code": "AIR",
+          "description": "airborne"
+        },
+        "codeshares": [
+          {
+            "fn": "SN 6008",
+            "airline": "Brussels Airlines",
+            "webSite": "www.brusselsairlines.at"
+          }
+        ],
+        "aircraft": {
+          "type": "E95",
+          "description": "Embraer 195"
+        },
+        "airline": {
+          "name": "Austrian",
+          "webSite": "www.austrian.com",
+          "iataCode": "OS",
+          "icaoCode": "AUA"
+        },
+        "destinations": [
+          {
+            "name": "Brussels Airport",
+            "nameEN": "Brussels",
+            "nameDE": "Brüssel",
+            "nameEN10": "Brussels",
+            "nameDE10": "Brüssel",
+            "iataCode": "BRU",
+            "webSite": "https://www.brusselsairport.be/en/passengers",
+            "city": {
+              "nameDE": "Brüssel",
+              "nameEN": "Brussels",
+              "country": {
+                "nameDE": "Belgien",
+                "nameEN": "Belgium"
+              }
+            }
+          }
+        ],
+        "checkin": {
+          "range": "351-358",
+          "terminal": "T3"
+        }
+      }
+    ]
+  }
+}
