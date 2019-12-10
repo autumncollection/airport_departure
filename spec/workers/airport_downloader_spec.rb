@@ -14,12 +14,12 @@ describe AirportDeparture::AirportDownloader do
       {
         "code" => "OS 359",
         "time" => "2019-12-09T12:40:00.000",
-        "destinations" => ["Brussels", 'Sydney']}
+        "destinations" => ['Brussels', 'Sydney'] }
     end
 
     let(:weather_data) do
-      { 'Brussels' => { temperature: 20 },
-        'Sydney' => { temperature: 25 } }
+      { 'brussels' => { temperature: 20 },
+        'sydney' => { temperature: 25 } }
     end
 
     subject { klass.perform(data) }

@@ -18,8 +18,11 @@
 
 ## Run sidekiq
 
-`bundle exec sidekiq -C ./sidekiq.yml`
+`bundle exec sidekiq -r ./app/sidekiq_app.rb`
 
 ## Run frontend
 
 `bundle exec thin start`
+
+## Run as a rake task
+`bundle exec rake airport_departure:airport_scheduler`
