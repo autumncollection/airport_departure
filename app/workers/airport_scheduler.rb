@@ -1,12 +1,15 @@
 require 'workers/airport_downloader'
 require_relative 'common_worker'
 
+require 'active_support/core_ext/hash/keys'
+
 module AirportDeparture
   class AirportScheduler < CommonWorker
     include Sidekiq::Worker
 
-    def perform(type)
+    def perform(type, force = false)
       @type = type
+      @force = force
       download_departures
     end
 
@@ -23,7 +26,11 @@ module AirportDeparture
     end
 
     def create_job(airport)
-      AirportDownloader.perform_async(airport)
+      if @force
+        AirportDownloader.new.perform(airport.stringify_keys)
+      else
+        AirportDownloader.perform_async(airport)
+      end
     end
   end
 end

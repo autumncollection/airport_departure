@@ -22,7 +22,7 @@ namespace :airport_departure do
     require 'workers/airport_scheduler'
 
     downloader = AirportDeparture::AirportScheduler.new
-    downloader.perform(ENV['type'])
+    downloader.perform(ENV['type'], true)
   end
 
   task :airport_downloader => :setup do

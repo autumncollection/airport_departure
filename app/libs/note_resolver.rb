@@ -14,8 +14,7 @@ module AirportDeparture
       'london' => { ['not bad', 'just ok', 'hot', 'warm'] => 'Beer is waiting' },
       'prague' => { ['not bad', 'just ok', 'hot', 'warm'] => 'Pivo!' },
       'madrid' => { ['just ok', 'hot', 'warm'] => 'Swimsuit up!' },
-      'sydney' => { ['just ok', 'hot', 'warm'] => 'Swimsuit up!', ['freezing', 'cold', 'avereage'] => 'Some opera' }
-    }
+      'sydney' => { ['just ok', 'hot', 'warm'] => 'Swimsuit up!', ['freezing', 'cold', 'avereage'] => 'Some opera' } }.freeze
 
     class << self
       def resolve(cities, data)
@@ -59,6 +58,8 @@ module AirportDeparture
 
       def resolve_zone(city_temp)
         ZONES.each do |key, temp|
+          next if city_temp.temperature.blank?
+
           return key if city_temp.temperature.between?(*temp)
         end
         "we don't know"

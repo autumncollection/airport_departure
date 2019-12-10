@@ -4,9 +4,6 @@
 
 `cp rp ./config/database.yml.example ./config/database.yml`
 
-`cp rp ./config/sidekiq.yml.example ./config/sidekiq.yml`
-
-`cp rp ./config/scheduler.yml.example ./config/scheduler.yml`
 
 
 `bundle exec rake db:create`

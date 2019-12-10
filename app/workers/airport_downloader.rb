@@ -4,6 +4,8 @@ require 'libs/note_resolver'
 require 'unicode_utils/downcase'
 
 module AirportDeparture
+  class MissingWeatherData < StandardError; end
+
   class AirportDownloader < CommonWorker
     def perform(data)
       raise_missing_avereage?
@@ -14,11 +16,12 @@ module AirportDeparture
   private
 
     def raise_missing_avereage?
+      return false unless CityTemperature.count.zero?
+
       raise(
         StandardError,
         'Missing avereage temperature data, run ' \
-        'rake airport_departure:avereage_temperature_service') if \
-        CityTemperature.count.zero?
+        'rake airport_departure:avereage_temperature_service')
     end
 
     def download(data)
@@ -27,7 +30,7 @@ module AirportDeparture
     end
 
     def save_data(data, weather)
-      cities = save_city(weather)
+      cities = save_city(data['destinations'], weather)
       flights = save_flight(data, cities)
       save_flights_cities(cities, flights)
       true
@@ -51,12 +54,12 @@ module AirportDeparture
       flight
     end
 
-    def save_city(destinations)
-      destinations.map do |destination, values|
+    def save_city(destinations, weather)
+      destinations.map do |destination|
         downcased = UnicodeUtils.downcase(destination)
         city = City.where(name: downcased).first_or_create(
           name: downcased)
-        city.update(temperature: values[:temperature])
+        city.update(temperature: weather[downcased][:temperature])
         city
       end
     end

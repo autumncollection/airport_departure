@@ -7,7 +7,7 @@ require 'models/city'
 
 module AirportDeparture
   class AvereageTemperatureService
-    URL = 'https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature'
+    URL = 'https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature'.freeze
 
     class << self
       def perform
@@ -23,12 +23,10 @@ module AirportDeparture
       end
 
       def save_data(data)
-        puts "#{data.size}"
         CityTemperature.connection.truncate(CityTemperature.table_name)
         counter = 0
         data.each do |city_item|
           counter += 1
-          puts counter.to_s
           downcased = UnicodeUtils.downcase(city_item[:name])
           city = City.where(name: downcased).first_or_create(
             name: downcased)
@@ -40,7 +38,7 @@ module AirportDeparture
               temperature: temperature)
           end
         end
-        data.size
+        counter
       end
 
       def create_url(city)

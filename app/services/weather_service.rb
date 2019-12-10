@@ -7,6 +7,9 @@ module AirportDeparture
 
     class << self
       def download(city)
+        raise(StandardError, "Missing API key for Openweathermap") unless \
+          OPENWEATHER[:key].present?
+
         response = DownloadService.download(
           url: create_url(city), params: { cache: CACHE[:cache] })
         prepare_data(response.response_body)
