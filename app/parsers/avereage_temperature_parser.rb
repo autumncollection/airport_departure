@@ -6,8 +6,8 @@ module AirportDeparture
       cities: '//div[@id="mw-content-text"]/div/table',
       city: './td[2]',
       temperatures: './td',
-      temperature: './text()'
-    }
+      temperature: './text()' }.freeze
+
     def perform(doc)
       parse(create_nokogiri(doc))
     end
@@ -26,6 +26,7 @@ module AirportDeparture
       name = at_xpath(city, :city)
       temperatures = xpath(city, :temperatures).each_with_index.each_with_object({}) do |(column, index), mem|
         next if index < 2 || index > 13
+
         mem[index - 1] = parse_temperature(column).to_f
       end
       { name: name.content.strip, temperatures: temperatures }
@@ -36,7 +37,7 @@ module AirportDeparture
     end
 
     def each_city(doc)
-      s = xpath(doc, :cities).xpath('.//tr')
+      xpath(doc, :cities).xpath('.//tr')
     end
   end
 end

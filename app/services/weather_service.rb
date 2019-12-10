@@ -3,7 +3,7 @@ require 'parsers/weather_parser'
 
 module AirportDeparture
   class WeatherService
-    URL = 'http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s'
+    URL = 'http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s'.freeze
 
     class << self
       def download(city)

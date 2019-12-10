@@ -45,17 +45,15 @@ module AirportDeparture
 
     def get(request)
       file_dir = compute_dir(request)
-      if cached?(request)
-        response = read_response(File.read(file_dir))
-        if response[:time] < Time.now
-          File.delete(file_dir)
-          return nil
-        end
+      return nil unless cached?(request)
 
-        response
-      else
-        nil
+      response = read_response(File.read(file_dir))
+      if response[:time] < Time.now
+        File.delete(file_dir)
+        return nil
       end
+
+      response
     end
 
     def set(request, response)
