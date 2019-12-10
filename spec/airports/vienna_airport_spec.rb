@@ -20,12 +20,11 @@ describe AirportDeparture::ViennaAirport do
       end
 
       it 'returns Array' do
-        binding.pry
         expect(response).to be_a(Array)
       end
 
       it 'returns some data' do
-        described_class::KEYS.keys.each do |key|
+        %i[code time destinations].each do |key|
           expect(response[0][key]).not_to be_empty
         end
       end

@@ -1,27 +1,23 @@
 require 'services/download_service'
-require 'services/json_service'
+require 'parsers/weather_parser'
 
 module AirportDeparture
   class WeatherService
-    TEMPERATURE_CONSTANT = 273.15
     URL = 'http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s'
-    KEYS = {
-      temperature: %w[main temp],
-      clouds: %w[clouds all],
-      humidity: %w[main humidity] }.freeze
 
     class << self
       def download(city)
-        response = DownloadService.download(url: create_url(city))
-        prepare_data(JsonService.parse(response.response_body))
+        response = DownloadService.download(
+          url: create_url(city), params: { cache: CACHE[:cache] })
+        prepare_data(response.response_body)
+      rescue AirportDeparture::HttpError
+        {}
       end
 
     private
 
       def prepare_data(json)
-        data = JsonService.parse_keys(json[:data], KEYS)
-        data[:temperature] = (data[:temperature] - TEMPERATURE_CONSTANT).round(2)
-        data
+        WeatherParser.new.perform(json)
       end
 
       def create_url(city)

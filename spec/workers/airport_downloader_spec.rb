@@ -2,11 +2,10 @@ require_relative '../spec_helper'
 require 'workers/airport_downloader'
 
 describe AirportDeparture::AirportDownloader do
-  WebMock.allow_net_connect!
   let(:klass) { described_class.new }
 
   before do
-    # allow(klass).to receive(:airport_departures).and_return(data)
+    allow(klass).to receive(:airport_departures).and_return(data)
   end
 
   describe '#download' do
@@ -20,9 +19,7 @@ describe AirportDeparture::AirportDownloader do
     subject { klass.perform(data) }
 
     context 'when data are ok' do
-      it 'has 2 jids' do
-        expect(subject.size).to be(2)
-      end
+      it { is_expected.to be_truthy }
     end
   end
 end

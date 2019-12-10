@@ -1,13 +1,18 @@
+require 'sidekiq'
+require 'active_support/core_ext/string/inflections'
+
 require 'models/city'
 require 'models/flight'
 require 'models/flights_city'
+require 'models/city_temperature'
 
 module AirportDeparture
   class CommonWorker
     include Sidekiq::Worker
 
     def airport_klass
-      @airport_klass ||= Object.const_get(@type.constantize).new
+      require "airports/#{@type}"
+      @airport_klass ||= Object.const_get("AirportDeparture::#{@type.classify}").new
     end
   end
 end

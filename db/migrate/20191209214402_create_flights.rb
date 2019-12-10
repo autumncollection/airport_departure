@@ -2,6 +2,7 @@ class CreateFlights < ActiveRecord::Migration[6.0]
   def change
     create_table :flights do |table|
       table.string :code, index: true
+      table.string :note
       table.time :time
     end
 

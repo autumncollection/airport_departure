@@ -1,13 +1,25 @@
 require_relative 'common_worker'
 require 'services/weather_service'
+require 'libs/note_resolver'
+require 'unicode_utils/downcase'
 
 module AirportDeparture
   class AirportDownloader < CommonWorker
     def perform(data)
+      raise_missing_avereage?
+
       download(data)
     end
 
   private
+
+    def raise_missing_avereage?
+      raise(
+        StandardError,
+        'Missing avereage temperature data, run ' \
+        'rake airport_departure:avereage_temperature_service') if \
+        CityTemperature.count.zero?
+    end
 
     def download(data)
       weather = download_weather(data['destinations'])
@@ -16,40 +28,49 @@ module AirportDeparture
 
     def save_data(data, weather)
       cities = save_city(weather)
-      flights = save_flight(data)
+      flights = save_flight(data, cities)
       save_flights_cities(cities, flights)
+      true
     end
 
     def save_flights_cities(cities, flight)
-      fc = cities.each_with_object([]) do |city, mem|
+      flight_cities = cities.each_with_object([]) do |city, mem|
         mem << FlightsCity.where(flight_id: flight.id, city_id: city.id). \
           first_or_create(flight_id: flight.id, city_id: city.id).id
       end
       finded = FlightsCity.where(flight_id: flight.id, city_id: cities.map(&:id)).map(&:id)
-      (finded - fc).each { |id| FlightsCity.delete(id: id) }
-      fc
+      (finded - flight_cities).each { |id| FlightsCity.delete(id: id) }
+      flight_cities
     end
 
-    def save_flight(code)
-      flight = Flight.where(code: code['code']).first_or_create(
-        code: code['code'])
-      flight.update_attributes(time: code['time'])
+    def save_flight(data, cities)
+      note = NoteResolver.resolve(cities, data)
+      flight = Flight.where(code: data['code']).first_or_create(
+        code: data['code'])
+      flight.update(time: data['time'], note: note)
       flight
     end
 
     def save_city(destinations)
       destinations.map do |destination, values|
-        city = City.where(name: destination).first_or_create(
-          name: destination)
-        city.update_attributes(temperature: values[:temperature])
+        downcased = UnicodeUtils.downcase(destination)
+        city = City.where(name: downcased).first_or_create(
+          name: downcased)
+        city.update(temperature: values[:temperature])
         city
       end
     end
 
     def download_weather(cities)
       cities.each_with_object({}) do |city, mem|
-        mem[city['city']] = WeatherService.download(city['city'])
+        mem[UnicodeUtils.downcase(city['city'])] = weather_service_download(city)
       end
+    end
+
+    def weather_service_download(city)
+      WeatherService.download(city['city'])
+    rescue AirportDeparture::HttpError
+      nil
     end
 
     def create_job(airport)

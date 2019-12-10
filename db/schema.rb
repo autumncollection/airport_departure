@@ -10,17 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_09_214402) do
+ActiveRecord::Schema.define(version: 2019_12_10_085330) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.float "temperature"
-    t.time "time"
     t.index ["name"], name: "index_cities_on_name"
+  end
+
+  create_table "city_temperatures", force: :cascade do |t|
+    t.integer "city_id"
+    t.integer "month"
+    t.float "temperature"
+    t.index ["city_id"], name: "index_city_temperatures_on_city_id"
+    t.index ["month"], name: "index_city_temperatures_on_month"
   end
 
   create_table "flights", force: :cascade do |t|
     t.string "code"
+    t.string "note"
     t.time "time"
     t.index ["code"], name: "index_flights_on_code"
   end

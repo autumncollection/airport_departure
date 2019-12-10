@@ -1,22 +1,19 @@
 require_relative 'common_airport'
+require 'parsers/vienna_airport_parser'
 
 module AirportDeparture
-  class WrongData < StandardError; end
   class ViennaAirport < CommonAirport
     URL = 'https://www.viennaairport.com/jart/prj3/va/data/flights/out.json'.freeze
-    KEYS = {
-      code: %w{fn},
-      time: %w{schedule},
-      destinations: { 'destinations' => { 'city' => %w{nameEN} } }
-    }
 
     def download_departures
-      json_data = JsonService.parse(DownloadService.download(url: URL).response_body)
-      raise(WrongData, json_data[:data]) unless json_data[:status] == :ok
+      data = DownloadService.download(url: URL).response_body
+      parse_departures(data)
+    end
 
-      json_data[:data].dig('monitor', 'departure').map do |departure|
-        JsonService.parse_keys(departure, KEYS)
-      end
+  private
+
+    def parse_departures(data)
+      ViennaAirportParser.new.perform(data)
     end
   end
 end
