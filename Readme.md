@@ -1,4 +1,4 @@
-# before run
+# Before
 
 `cp rp ./config/config.yml.example ./config/config.yml`
 
@@ -17,7 +17,7 @@
 
 `bundle exec rake sidekiq:reload_cron`
 
-# to initial run
+# For run
 
 ## Run sidekiq
 
