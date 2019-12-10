@@ -18,4 +18,11 @@
 `bundle exec rake sidekiq:reload_cron`
 
 # to initial run
+
+## Run sidekiq
+
 `bundle exec sidekiq -C ./sidekiq.yml`
+
+## Run frontend
+
+`bundle exec thin start`
