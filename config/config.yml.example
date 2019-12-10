@@ -1,0 +1,14 @@
+---
+  LOGGER:
+    file: 'std.log'
+  REDIS:
+    sidekiq:
+      connect:
+        db: 0
+      connection_pool:
+        size: 1
+  OPENWEATHER:
+    key: some_key
+  CACHE:
+    cache: true
+    hour: 1

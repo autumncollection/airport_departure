@@ -47,7 +47,7 @@ module AirportDeparture
       note = NoteResolver.resolve(cities, data)
       flight = Flight.where(code: data['code']).first_or_create(
         code: data['code'])
-      flight.update(time: data['time'], note: note)
+      flight.update(schedule_time: Time.parse(data['time']), note: note)
       flight
     end
 
@@ -63,12 +63,12 @@ module AirportDeparture
 
     def download_weather(cities)
       cities.each_with_object({}) do |city, mem|
-        mem[UnicodeUtils.downcase(city['city'])] = weather_service_download(city)
+        mem[UnicodeUtils.downcase(city)] = weather_service_download(city)
       end
     end
 
     def weather_service_download(city)
-      WeatherService.download(city['city'])
+      WeatherService.download(city)
     rescue AirportDeparture::HttpError
       nil
     end

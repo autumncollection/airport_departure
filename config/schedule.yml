@@ -1,0 +1,6 @@
+AirportScheduler:
+  cron: "15 * * * *"
+  class: "AirportDeparture::AirportScheduler"
+  queue: default
+  args:
+    - vienna_airport

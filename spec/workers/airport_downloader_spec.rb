@@ -6,6 +6,7 @@ describe AirportDeparture::AirportDownloader do
 
   before do
     allow(klass).to receive(:airport_departures).and_return(data)
+    allow(klass).to receive(:download_weather).and_return(weather_data)
   end
 
   describe '#download' do
@@ -13,7 +14,12 @@ describe AirportDeparture::AirportDownloader do
       {
         "code" => "OS 359",
         "time" => "2019-12-09T12:40:00.000",
-        "destinations" => [{ "city" => "Brussels" }, { 'city' => 'Sydney' }]}
+        "destinations" => ["Brussels", 'Sydney']}
+    end
+
+    let(:weather_data) do
+      { 'Brussels' => { temperature: 20 },
+        'Sydney' => { temperature: 25 } }
     end
 
     subject { klass.perform(data) }

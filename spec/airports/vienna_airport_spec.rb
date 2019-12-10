@@ -35,7 +35,7 @@ describe AirportDeparture::ViennaAirport do
         "<html>not a json</html>"
       end
 
-      it 'returns Array' do
+      it 'raise exception' do
         expect { response }.to raise_error(AirportDeparture::WrongData)
       end
     end

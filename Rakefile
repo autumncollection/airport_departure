@@ -6,8 +6,14 @@ require 'ini_database'
 
 require 'sinatra/activerecord/rake'
 
-namespace :db do
-  task :load_config do
+require 'sidekiq'
+
+namespace :sidekiq do
+  task :reload_cron do
+    require 'sidekiq-cron'
+    Sidekiq::Cron::Job.destroy_all!
+    schedule_file = File.join(__dir__, 'config/schedule.yml')
+    Sidekiq::Cron::Job.load_from_hash(YAML.load_file(schedule_file))
   end
 end
 

@@ -18,3 +18,7 @@ end
 
 Sidekiq.default_worker_options = {
   queue: :normal, retry: 6, failures: :exhausted }
+
+Sidekiq.configure_server do |config|
+  config.logger = LOGGER_INSTANCE
+end

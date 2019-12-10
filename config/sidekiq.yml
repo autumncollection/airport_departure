@@ -1,0 +1,8 @@
+development:
+  queues:
+    - default
+  concurrency: 1
+production:
+  queues:
+    - default
+  concurrency: 1
